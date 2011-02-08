@@ -12,7 +12,7 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin; export PATH
 #
 echo "                            "
 echo "+*+----------------------+*+"
-echo "+*+ Welcome to Sparemint +*+"
+echo "+*+ Welcome to FreeMiNT! +*+"
 echo "+*+----------------------+*+"
 echo "                            "
 

@@ -6,8 +6,8 @@
 PATH=/usr/local/bin:$PATH
 
 
-if [ -f /etc/sparemint-release ]; then
-    R=$(cat /etc/sparemint-release)
+if [ -f /etc/freemint-release ]; then
+    R=$(cat /etc/freemint-release)
 
     arch=$(uname -m)
     a="a"
