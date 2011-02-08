@@ -1,0 +1,11 @@
+# 
+# [ this file must follow the unix convention - save with no CR !!! ]
+# 
+# static default gateway configuration goes here
+# 
+# syntax:
+# <interface> <gateway>
+# 
+# example: ne0 192.168.0.200
+#          this set the defaultroute over ne0 to 192.168.0.200
+# 

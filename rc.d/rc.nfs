@@ -1,0 +1,20 @@
+#
+# /etc/rc.nfs -- Mounting of nfs-volumes at boot-time, executed by rc.net
+#
+#
+# Mount filesystems and set owner/permissions from /etc/fstab.
+#
+echo "Mounting network-volumes:"
+cat /dev/null > /etc/mtab
+grep -v '^#' /etc/fstab | \
+while read drv mntp type bsize retrans bootmount; do
+	if [ "$type" = "nfs" ]; then
+		mount_nfs -o wsize="$bsize" -o rsize="$bsize" -o retrans="$retrans" "$drv" "$mntp"&
+		echo "$drv" "$mntp"
+		sleep 1
+	fi
+done
+echo "."
+
+exit 0
+

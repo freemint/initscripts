@@ -1,0 +1,45 @@
+#
+# /etc/rc.net -- run from /etc/rc.
+#
+
+#
+# Setup network interfaces and routes
+#
+echo -n "configuring interfaces:"
+grep -v '^#' /etc/sysconfig/config.if | \
+while read intrfc ipaddr network netmask broadaddr; do
+	if [ -f /etc/sysconfig/"$intrfc".hw ]; then
+		ifconfig $intrfc -f /etc/sysconfig/"$intrfc".hw
+	fi
+	ifconfig $intrfc addr $ipaddr netmask $netmask broadaddr $broadaddr up > /dev/null 2>&1
+	if [ "X$intrfc" != Xlo0 ]; then 
+		route add $network $intrfc 
+	fi
+	echo -n " $intrfc"
+done
+echo "."
+
+echo -n "adding defaultroute:"
+grep -v '^#' /etc/sysconfig/defaultroute | \
+while read intrfc ipaddr; do
+	route add default $intrfc gw $ipaddr > /dev/null 2>&1
+	echo -n "$ipaddr."
+	break
+done
+echo "."
+
+#
+# Start network daemons
+#
+grep -v '^#' /etc/sysconfig/net.services | \
+while read service; do
+	path="/etc/rc.d/init.d/$service"
+	if [ -f $path ]; then
+		$path start
+	fi
+done
+
+
+if [ -f /etc/rc.d/rc.nfs ]; then
+	sh /etc/rc.d/rc.nfs
+fi

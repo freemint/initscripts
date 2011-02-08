@@ -1,0 +1,11 @@
+# 
+# [ this file must follow the unix convention - save with no CR !!! ]
+# 
+# static interface configuration goes here
+# 
+# syntax:
+# <interface> <ipaddr> <network> <netmask> <broadaddr>
+# 
+# example: ne0 192.168.0.10 192.168.0.0 255.255.255.0 192.168.0.255
+#          this setup interface ne0 with IP 192.168.0.10
+# 

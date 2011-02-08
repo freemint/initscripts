@@ -1,0 +1,7 @@
+# 
+# [ this file must follow the unix convention - save with no CR !!! ]
+# 
+# the default network services that are started on every system boot
+# after the network is setted up
+# it's interpreted as /etc/rc.d/init.d/<name> start
+# 

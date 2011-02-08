@@ -1,0 +1,6 @@
+# 
+# [ this file must follow the unix convention - save with no CR !!! ]
+# 
+# additional services that are started on every system boot
+# it's interpreted as /etc/rc.d/init.d/<name> start
+# 

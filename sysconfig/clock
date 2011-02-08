@@ -1,0 +1,5 @@
+# 
+# [ this file must follow the unix convention - save with no CR !!! ]
+# 
+CLOCKMODE=GMT
+ZONE="Europe/Berlin"

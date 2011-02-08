@@ -1,0 +1,43 @@
+#
+# /etc/rc.local -- run from /etc/rc.
+#
+# This file does everything which is local to the current machine.
+#
+PATH=/usr/local/bin:$PATH
+
+
+if [ -f /etc/sparemint-release ]; then
+    R=$(cat /etc/sparemint-release)
+
+    arch=$(uname -m)
+    a="a"
+    case "_$arch" in
+	    _a*) a="an";;
+	    _i*) a="an";;
+    esac
+    
+    # This will overwrite /etc/issue at every boot.  So, make any changes you
+    # want to make to /etc/issue here or you will lose them when you reboot.
+    echo "" > /etc/issue
+    echo "$R" >> /etc/issue
+    echo "FreeMiNT $(uname -r) on $a $(uname -m)" >> /etc/issue
+
+    cp -f /etc/issue /etc/issue.net
+    echo >> /etc/issue
+fi
+touch /var/lock/subsys/local
+
+
+grep -v '^#' /etc/sysconfig/add.services | \
+while read service; do
+	path="/etc/rc.d/init.d/$service"
+	if [ -f $path ]; then
+		$path start
+	fi
+done
+
+
+# Set the TT's console into auto-wrap mode. (Why
+# does the TT start up without auto-text-wrap?)
+#
+# echo -n "v"
