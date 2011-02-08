@@ -3,5 +3,5 @@
 # 
 # the default network services that are started on every system boot
 # after the network is setted up
-# it's interpreted as /etc/rc.d/init.d/<name> start
+# it's interpreted as /etc/init.d/<name> start
 # 

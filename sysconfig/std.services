@@ -2,6 +2,6 @@
 # [ this file must follow the unix convention - save with no CR !!! ]
 # 
 # the default services that are started on every system boot
-# it's interpreted as /etc/rc.d/init.d/<name> start
+# it's interpreted as /etc/init.d/<name> start
 # 
 syslog

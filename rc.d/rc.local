@@ -30,7 +30,7 @@ touch /var/lock/subsys/local
 
 grep -v '^#' /etc/sysconfig/add.services | \
 while read service; do
-	path="/etc/rc.d/init.d/$service"
+	path="/etc/init.d/$service"
 	if [ -f $path ]; then
 		$path start
 	fi

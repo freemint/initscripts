@@ -90,7 +90,7 @@ echo "."
 #
 grep -v '^#' /etc/sysconfig/std.services | \
 while read service; do
-	path="/etc/rc.d/init.d/$service"
+	path="/etc/init.d/$service"
 	if [ -f $path ]; then
 		$path start
 	fi
