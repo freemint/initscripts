@@ -28,7 +28,7 @@ fi
 touch /var/lock/subsys/local
 
 
-grep -v '^#' /etc/sysconfig/add.services | \
+grep -v '^#' /etc/conf.d/add.services | \
 while read service; do
 	path="/etc/init.d/$service"
 	if [ -f $path ]; then

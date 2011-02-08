@@ -6,10 +6,10 @@
 # Setup network interfaces and routes
 #
 echo -n "configuring interfaces:"
-grep -v '^#' /etc/sysconfig/config.if | \
+grep -v '^#' /etc/conf.d/config.if | \
 while read intrfc ipaddr network netmask broadaddr; do
-	if [ -f /etc/sysconfig/"$intrfc".hw ]; then
-		ifconfig $intrfc -f /etc/sysconfig/"$intrfc".hw
+	if [ -f /etc/conf.d/"$intrfc".hw ]; then
+		ifconfig $intrfc -f /etc/conf.d/"$intrfc".hw
 	fi
 	ifconfig $intrfc addr $ipaddr netmask $netmask broadaddr $broadaddr up > /dev/null 2>&1
 	if [ "X$intrfc" != Xlo0 ]; then 
@@ -20,7 +20,7 @@ done
 echo "."
 
 echo -n "adding defaultroute:"
-grep -v '^#' /etc/sysconfig/defaultroute | \
+grep -v '^#' /etc/conf.d/defaultroute | \
 while read intrfc ipaddr; do
 	route add default $intrfc gw $ipaddr > /dev/null 2>&1
 	echo -n "$ipaddr."
@@ -31,7 +31,7 @@ echo "."
 #
 # Start network daemons
 #
-grep -v '^#' /etc/sysconfig/net.services | \
+grep -v '^#' /etc/conf.d/net.services | \
 while read service; do
 	path="/etc/init.d/$service"
 	if [ -f $path ]; then

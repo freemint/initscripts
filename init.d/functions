@@ -23,8 +23,8 @@ export PATH="/sbin:/usr/sbin:/bin:/usr/bin:/usr/X11R6/bin"
 # Get a sane screen width
 [ -z "$COLUMNS" ] && COLUMNS=80
 
-if [ -f /etc/sysconfig/i18n -a -z "$NOLOCALE" ] ; then
-  . /etc/sysconfig/i18n
+if [ -f /etc/conf.d/i18n -a -z "$NOLOCALE" ] ; then
+  . /etc/conf.d/i18n
   if [ "$LANG" = "ja_JP.eucJP" -a "`/sbin/consoletype`" != "pty" ]; then
     unset LANG
   else
@@ -34,10 +34,10 @@ fi
 
 # Read in our configuration
 if [ -z "$BOOTUP" ]; then
-  if [ -f /etc/sysconfig/init ]; then
-      . /etc/sysconfig/init
+  if [ -f /etc/conf.d/init ]; then
+      . /etc/conf.d/init
   else
-    # This all seem confusing? Look in /etc/sysconfig/init,
+    # This all seem confusing? Look in /etc/conf.d/init,
     # or in /usr/doc/initscripts-*/sysconfig.txt
     BOOTUP=color
     RES_COL=60

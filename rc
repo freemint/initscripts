@@ -74,12 +74,12 @@ echo "done"
 # Setup hostname/domainname
 #
 echo -n "setting up:"
-if [ -f /etc/sysconfig/hostname ]; then
-	hostname -F /etc/sysconfig/hostname
+if [ -f /etc/conf.d/hostname ]; then
+	hostname -F /etc/conf.d/hostname
 	echo -n " hostname"
 fi
-if [ -f /etc/sysconfig/domainname ]; then
-	domainname -F /etc/sysconfig/domainname
+if [ -f /etc/conf.d/domainname ]; then
+	domainname -F /etc/conf.d/domainname
 	echo -n " domainname"
 fi
 echo "."
@@ -88,7 +88,7 @@ echo "."
 #
 # Start the standard daemons.
 #
-grep -v '^#' /etc/sysconfig/std.services | \
+grep -v '^#' /etc/conf.d/std.services | \
 while read service; do
 	path="/etc/init.d/$service"
 	if [ -f $path ]; then
