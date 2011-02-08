@@ -1,0 +1,31 @@
+#
+# /etc/rc.single -- Executed by init(8) when the system
+#                   is booted in single-user mode.
+#
+umask 022
+PATH=/sbin:/bin:/usr/sbin:/usr/bin; export PATH
+
+# Set owner/permissions from /etc/fstab.
+cat /dev/null > /etc/mtab
+grep -v '^#' /etc/fstab | \
+while read drv mntp type owner group perm; do
+	if [ -d "/$drv" ]; then
+		fs="/$drv"
+	elif [ -d "/.$drv" ]; then
+		fs="/.$drv"
+	else
+		echo "Warning: drive $drv not found"
+		drv="-"; fs="-"
+	fi
+	if [ "X$fs" != "X-" -a "X$owner" != "X-" ]; then
+		chown "$owner" "$fs"
+	fi
+	if [ "X$fs" != "X-" -a "X$group" != "X-" ]; then
+		chgrp "$group" "$fs"
+	fi
+	if [ "X$fs" != "X-" -a "X$perm" != "X-" ]; then
+		chmod "$perm" "$fs"
+	fi
+done
+
+exit 0

@@ -1,0 +1,117 @@
+#
+# /etc/rc -- Executed by init(8).
+#            Network setup goes in /etc/rc.net,
+#            local customisation goes in /etc/rc.local
+#
+umask 022
+PATH=/bin:/sbin:/usr/bin:/usr/sbin; export PATH
+
+
+#
+# welcome banner
+#
+echo "                            "
+echo "+*+----------------------+*+"
+echo "+*+ Welcome to Sparemint +*+"
+echo "+*+----------------------+*+"
+echo "                            "
+
+echo "`date`,"
+if [ -f /etc/single ]; then
+	echo "Multiuser startup in progress..."
+	echo ""
+	rm -f /etc/single
+else
+	echo "Automatic reboot in progress..."
+	echo ""
+fi
+
+
+#
+# Initial cleanup
+#
+echo "Removing stale lockfiles."
+rm -f /var/spool/locks/* /var/lock/subsys/* /var/run/*.pid
+
+echo "Clearing /tmp, /var/tmp and /usr/tmp."
+rm -rf /tmp/* /var/tmp/* /usr/tmp/* > /dev/null 2>&1
+
+echo "Clearing /etc/utmp and /var/run/utmp."
+cat /dev/null > /etc/utmp
+cat /dev/null > /var/run/utmp
+
+rm -f /etc/nologin*
+
+
+#
+# Set owner/permissions from /etc/fstab.
+#
+echo -n "setting up /etc/fstab ... "
+cat /dev/null > /etc/mtab
+grep -v '^#' /etc/fstab | \
+while read drv mntp type owner group perm; do
+	if [ -d "/$drv" ]; then
+		fs="/$drv"
+	elif [ -d "/.$drv" ]; then
+		fs="/.$drv"
+	else
+		drv="-"; fs="-"
+	fi
+	if [ "X$fs" != "X-" -a "X$owner" != "X-" ]; then
+		chown "$owner" "$fs"
+	fi
+	if [ "X$fs" != "X-" -a "X$group" != "X-" ]; then
+		chgrp "$group" "$fs"
+	fi
+	if [ "X$fs" != "X-" -a "X$perm" != "X-" ]; then
+		chmod "$perm" "$fs"
+	fi
+done
+echo "done"
+
+
+#
+# Setup hostname/domainname
+#
+echo -n "setting up:"
+if [ -f /etc/sysconfig/hostname ]; then
+	hostname -F /etc/sysconfig/hostname
+	echo -n " hostname"
+fi
+if [ -f /etc/sysconfig/domainname ]; then
+	domainname -F /etc/sysconfig/domainname
+	echo -n " domainname"
+fi
+echo "."
+
+
+#
+# Start the standard daemons.
+#
+grep -v '^#' /etc/sysconfig/std.services | \
+while read service; do
+	path="/etc/rc.d/init.d/$service"
+	if [ -f $path ]; then
+		$path start
+	fi
+done
+
+
+#
+# Start up the MiNT Network - only if really enabled.
+#
+if [ -f /etc/rc.d/rc.net -a -e /dev/socket ]; then
+	sh /etc/rc.d/rc.net
+fi
+
+
+#
+# execute local things
+#
+if [ -f /etc/rc.d/rc.local ]; then
+	sh /etc/rc.d/rc.local
+fi
+
+
+echo ""
+exit 0
